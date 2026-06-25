@@ -1,0 +1,51 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Random Coffee GIF</title>
+  <meta property="og:title" content="Random Coffee GIF">
+  <meta property="og:image" id="og-image" content="coffee_gifs/coffee_001.gif">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" id="twitter-image" content="coffee_gifs/coffee_001.gif">
+  <style>
+    body {
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      background: #111;
+      font-family: sans-serif;
+      color: #fff;
+    }
+    img {
+      max-width: 90vw;
+      max-height: 80vh;
+    }
+    button {
+      margin-top: 16px;
+      padding: 8px 20px;
+      font-size: 1rem;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <img id="gif" src="" alt="random coffee gif">
+  <button onclick="next()">Next</button>
+
+  <script>
+    const total = 100;
+    function next() {
+      const n = Math.floor(Math.random() * total) + 1;
+      const name = 'coffee_' + String(n).padStart(3, '0') + '.gif';
+      document.getElementById('gif').src = 'coffee_gifs/' + name;
+      document.getElementById('og-image').content = 'coffee_gifs/' + name;
+      document.getElementById('twitter-image').content = 'coffee_gifs/' + name;
+    }
+    next();
+  </script>
+</body>
+</html>
