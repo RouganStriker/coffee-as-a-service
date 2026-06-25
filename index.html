@@ -1,13 +1,14 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <title>Random Coffee GIF</title>
   <meta property="og:title" content="Random Coffee GIF">
-  <meta property="og:image" id="og-image" content="coffee_gifs/coffee_001.gif">
+  <meta property="og:type" content="website">
+  <!-- og:image is set to an absolute URL by the script below -->
+  <meta property="og:image" id="og-image" content="">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:image" id="twitter-image" content="coffee_gifs/coffee_001.gif">
+  <meta name="twitter:image" id="twitter-image" content="">
   <style>
     body {
       margin: 0;
@@ -38,14 +39,32 @@
 
   <script>
     const total = 100;
-    function next() {
-      const n = Math.floor(Math.random() * total) + 1;
-      const name = 'coffee_' + String(n).padStart(3, '0') + '.gif';
-      document.getElementById('gif').src = 'coffee_gifs/' + name;
-      document.getElementById('og-image').content = 'coffee_gifs/' + name;
-      document.getElementById('twitter-image').content = 'coffee_gifs/' + name;
+
+    function gifName(n) {
+      return 'coffee_' + String(n).padStart(3, '0') + '.gif';
     }
-    next();
+
+    function show(n) {
+      const name = gifName(n);
+      const absURL = location.origin + location.pathname.replace(/[^/]*$/, '') + 'coffee_gifs/' + name;
+
+      document.getElementById('gif').src = 'coffee_gifs/' + name;
+      document.getElementById('og-image').content = absURL;
+      document.getElementById('twitter-image').content = absURL;
+
+      // Update ?gif= so copying the URL gives Slack a unique, scrapeable link
+      history.replaceState(null, '', '?gif=' + n);
+    }
+
+    function next() {
+      show(Math.floor(Math.random() * total) + 1);
+    }
+
+    // On load: honour ?gif= if present, otherwise pick randomly
+    const params = new URLSearchParams(location.search);
+    const initial = parseInt(params.get('gif'), 10);
+    show((initial >= 1 && initial <= total) ? initial : Math.floor(Math.random() * total) + 1);
   </script>
 </body>
 </html>
+
